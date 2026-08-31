@@ -4,11 +4,14 @@ import { Form } from "./components/Form"
 import { Header } from "./components/Header"
 import { Pagination } from "./components/Pagination"
 import { JobsList } from "./components/JobsList"
+import { chunkArray } from "./utils/chunkArray"
 
+const RESULTS_PER_PAGE = 3
 
 function App() {
 
   const [jobs, setJobs] = useState([])
+  const [currentPagination, setCurrentPagination] = useState(0)
 
   useEffect(() => {
     fetch("./data.json")
@@ -16,6 +19,11 @@ function App() {
       .then(setJobs)
   }, [])
 
+  const handlePaginationChange = (index) => {
+    setCurrentPagination(index)
+  }
+
+  const chunkedJobs = chunkArray(jobs, RESULTS_PER_PAGE)
 
   return (
     <>
@@ -28,11 +36,8 @@ function App() {
         </section>
         <section>
           <h2>Resultados de búsqueda</h2>
-          <div className="jobs-listings">
-            <JobsList jobs={jobs} />
-          </div>
-
-          <Pagination />
+          <JobsList jobs={chunkedJobs[currentPagination]} />
+          <Pagination itemsNumber={chunkedJobs.length} onClick={handlePaginationChange} currentIndex={currentPagination} />
         </section>
       </main>
       <Footer />

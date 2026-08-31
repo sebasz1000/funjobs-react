@@ -1,24 +1,40 @@
-export function Pagination() {
+import { ChevronIcon } from "./ChevronIcon"
+import { PaginationAnchor } from "./PaginationAnchor"
+
+export function Pagination({ itemsNumber, onClick, currentIndex }) {
+
+    const hasItems = itemsNumber > 0
+
+    if (!hasItems)
+        return
+
+    const handlePrevNext = (direction) => {
+
+        (direction === "prev")
+            ? (currentIndex > 0) && onClick(currentIndex - 1)
+            : (currentIndex < (itemsNumber - 1)) && onClick(currentIndex + 1)
+
+    }
+
+    const isPrevHidden = (currentIndex === 0)
+    const isNextHidden = (currentIndex === (itemsNumber - 1))
     return (
         <nav className="pagination">
-            <a href="#" className="chevron-anchor prev">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                    strokeLinecap="round" strokeLinejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M15 6l-6 6l6 6" />
-                </svg>
-            </a>
+            <ChevronIcon direction="prev"
+                onClick={handlePrevNext}
+                isHidden={isPrevHidden} />
             <div className="pagination-numbers">
-                {/*  achors created dynamically  */}
+                {
+                    Array.from({ length: itemsNumber }).map((_, i) => {
+
+                        const isActive = (currentIndex === i)
+                        return <PaginationAnchor key={i} index={i} onClick={onClick} isActive={isActive} />
+                    })
+                }
             </div>
-            <a href="#" className="chevron-anchor next">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
-                    strokeLinecap="round" strokeLinejoin="round"
-                    className="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M9 6l6 6l-6 6" />
-                </svg>
-            </a>
+            <ChevronIcon direction="next"
+                onClick={handlePrevNext}
+                isHidden={isNextHidden} />
         </nav>
     )
 }
