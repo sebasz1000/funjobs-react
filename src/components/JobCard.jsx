@@ -1,16 +1,12 @@
 
-export function JobCard({ titulo, empresa, ubicacion, descripcion, data }) {
+export function JobCard({ id, titulo, empresa, ubicacion, descripcion, data, isApplied, onApply }) {
 
-    const [isApplied, setIsapplied] = React.useState(false)
     const { technology, modalidad, nivel } = data
     let dataTechnology = technology
 
     if (Array.isArray(technology))
         dataTechnology = technology.join(" ")
 
-    const handleApply = () => {
-        setIsapplied(prevState => !prevState)
-    }
 
     const ApplyBtnText = isApplied ? "Aplicado" : "Aplicar"
     const ApplyBtnClassName = isApplied ? "is-applied" : ""
@@ -23,7 +19,7 @@ export function JobCard({ titulo, empresa, ubicacion, descripcion, data }) {
             <p>Tech Stack: {technology}</p>
             <small>Nivel de experiencia: {nivel}</small>
             <button style={{ display: "block", marginTop: "18px" }}
-                onClick={handleApply}
+                onClick={() => onApply(id)}
                 className={`btn-apply-job ${ApplyBtnClassName}`}>{ApplyBtnText}</button>
         </div>
     </article>)

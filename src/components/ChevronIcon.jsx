@@ -21,7 +21,7 @@ export function ChevronIcon({ direction, onClick, isHidden }) {
     }
 
     const isHiddenClass = isHidden ? "is-hidden" : ""
-    console.log(isHidden)
+
     return (
         <a href="#" className={`chevron-anchor ${direction} ${isHiddenClass}`} onClick={handleClick}
             disabled={isHidden}>

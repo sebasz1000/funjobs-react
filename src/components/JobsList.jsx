@@ -1,6 +1,6 @@
 import { JobCard } from "./JobCard"
 
-export function JobsList({ jobs }) {
+export function JobsList({ jobs, onApply }) {
     const haveJobs = jobs?.length > 0
 
     if (!haveJobs)
@@ -9,7 +9,7 @@ export function JobsList({ jobs }) {
     return (
         <div className="jobs-listings">
             {
-                jobs.map(job => <JobCard key={job.id} {...job} />)
+                jobs.map(job => <JobCard key={job.id} {...job} onApply={onApply} />)
             }
         </div>
     )

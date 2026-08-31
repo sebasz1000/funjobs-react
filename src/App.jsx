@@ -8,6 +8,12 @@ import { chunkArray } from "./utils/chunkArray"
 
 const RESULTS_PER_PAGE = 3
 
+const jobsMapper = (jobs) => {
+  return jobs.map(job => ({
+    ...job,
+    isApplied: false
+  }))
+}
 function App() {
 
   const [jobs, setJobs] = useState([])
@@ -16,11 +22,17 @@ function App() {
   useEffect(() => {
     fetch("./data.json")
       .then(res => res.json())
-      .then(setJobs)
+      .then(data => {
+        setJobs(jobsMapper(data))
+      })
   }, [])
 
   const handlePaginationChange = (index) => {
     setCurrentPagination(index)
+  }
+
+  const handleJobApply = (id) => {
+    setJobs(prevJobs => prevJobs.map(job => (job.id !== id) ? job : { ...job, isApplied: true }))
   }
 
   const chunkedJobs = chunkArray(jobs, RESULTS_PER_PAGE)
@@ -36,7 +48,7 @@ function App() {
         </section>
         <section>
           <h2>Resultados de búsqueda</h2>
-          <JobsList jobs={chunkedJobs[currentPagination]} />
+          <JobsList jobs={chunkedJobs[currentPagination]} onApply={handleJobApply} />
           <Pagination itemsNumber={chunkedJobs.length} onClick={handlePaginationChange} currentIndex={currentPagination} />
         </section>
       </main>
