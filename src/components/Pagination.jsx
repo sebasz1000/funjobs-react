@@ -1,34 +1,41 @@
+import styles from "./Pagination.module.css"
 import { ChevronIcon } from "./ChevronIcon"
 import { PaginationAnchor } from "./PaginationAnchor"
 
-export function Pagination({ itemsNumber, onClick, currentIndex }) {
+export function Pagination({ pagesNumber = 1
+    , onClick
+    , currentIndex }) {
 
-    const hasItems = itemsNumber > 0
+    //pagesNumber = pagesNumber ?? 1
+    const hasItems = pagesNumber > 0
 
     if (!hasItems)
         return
 
+    const isPrevHidden = (currentIndex === 0)
+    const isNextHidden = (currentIndex === (pagesNumber - 1))
+    const pages = Array.from({ length: pagesNumber }, (_, i) => i)
+
     const handlePrevNext = (direction) => {
-
         (direction === "prev")
-            ? (currentIndex > 0) && onClick(currentIndex - 1)
-            : (currentIndex < (itemsNumber - 1)) && onClick(currentIndex + 1)
-
+            ? !isPrevHidden && onClick(currentIndex - 1)
+            : !isNextHidden && onClick(currentIndex + 1)
     }
 
-    const isPrevHidden = (currentIndex === 0)
-    const isNextHidden = (currentIndex === (itemsNumber - 1))
+
     return (
-        <nav className="pagination">
+        <nav className={styles.pagination}>
             <ChevronIcon direction="prev"
                 onClick={handlePrevNext}
                 isHidden={isPrevHidden} />
-            <div className="pagination-numbers">
+            <div className={styles.paginationNumbers}>
                 {
-                    Array.from({ length: itemsNumber }).map((_, i) => {
-
-                        const isActive = (currentIndex === i)
-                        return <PaginationAnchor key={i} index={i} onClick={onClick} isActive={isActive} />
+                    pages.map(pageIndex => {
+                        const isActive = (currentIndex === pageIndex)
+                        return <PaginationAnchor key={pageIndex}
+                            index={pageIndex}
+                            onClick={onClick}
+                            isActive={isActive} />
                     })
                 }
             </div>

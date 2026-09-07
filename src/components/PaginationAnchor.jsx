@@ -1,3 +1,4 @@
+import styles from "./PaginationAnchor.module.css"
 export function PaginationAnchor({ index, onClick, isActive }) {
 
     const handleClick = (e) => {
@@ -5,11 +6,11 @@ export function PaginationAnchor({ index, onClick, isActive }) {
         onClick(index)
     }
 
-    const isActiveClass = isActive ? "is-active" : ""
+    const isActiveClass = isActive ? styles.isActive : ""
 
     return <a data-index={index}
         href="#"
-        className={`pagination-anchor ${isActiveClass}`}
+        className={`${styles.paginationAnchor} ${isActiveClass}`}
         onClick={handleClick}
         disabled={isActive}>
         {index + 1}

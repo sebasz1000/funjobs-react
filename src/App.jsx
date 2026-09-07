@@ -4,7 +4,6 @@ import { Form } from "./components/Form"
 import { Header } from "./components/Header"
 import { Pagination } from "./components/Pagination"
 import { JobsList } from "./components/JobsList"
-import { chunkArray } from "./utils/chunkArray"
 import { FILTERS, RESULTS_PER_PAGE } from "./consts/const"
 import { jobsMapper } from "./utils/jobs.mapper"
 
@@ -70,9 +69,11 @@ function App() {
 
 
   const filteredJobs = getFilteredJobs(jobs)
-
-  const chunkedJobs = chunkArray(filteredJobs, RESULTS_PER_PAGE)
-  const currentJobs = chunkedJobs[currentPagination] || []
+  const totalPages = Math.ceil(filteredJobs.length / RESULTS_PER_PAGE)
+  const paginatedJobs = filteredJobs.slice(
+    currentPagination * RESULTS_PER_PAGE,
+    (currentPagination + 1) * RESULTS_PER_PAGE
+  )
 
   return (
     <>
@@ -85,8 +86,8 @@ function App() {
         </section>
         <section>
           <h2>Resultados de búsqueda</h2>
-          <JobsList jobs={currentJobs} onApply={handleJobApply} />
-          <Pagination itemsNumber={chunkedJobs.length} onClick={handlePaginationChange} currentIndex={currentPagination} />
+          <JobsList jobs={paginatedJobs} onApply={handleJobApply} />
+          <Pagination pagesNumber={totalPages} onClick={handlePaginationChange} currentIndex={currentPagination} />
         </section>
       </main>
       <Footer />

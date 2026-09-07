@@ -1,0 +1,13 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-block: 2rem;
+}
+
+
+.paginationNumbers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
