@@ -5,19 +5,21 @@ import { Header } from "./components/Header"
 import { Pagination } from "./components/Pagination"
 import { JobsList } from "./components/JobsList"
 import { chunkArray } from "./utils/chunkArray"
+import { FILTERS, RESULTS_PER_PAGE } from "./consts/const"
+import { jobsMapper } from "./utils/jobs.mapper"
 
-const RESULTS_PER_PAGE = 3
 
-const jobsMapper = (jobs) => {
-  return jobs.map(job => ({
-    ...job,
-    isApplied: false
-  }))
-}
+const initFilters = Object.keys(FILTERS).reduce((obj, filterName) => {
+  obj[filterName.toLowerCase()] = FILTERS[filterName][0].value
+  return obj
+}, {})
+
 function App() {
 
   const [jobs, setJobs] = useState([])
   const [currentPagination, setCurrentPagination] = useState(0)
+  const [filters, setFilters] = useState(initFilters)
+  const [searchText, setSearchText] = useState("")
 
   useEffect(() => {
     fetch("./data.json")
@@ -35,7 +37,42 @@ function App() {
     setJobs(prevJobs => prevJobs.map(job => (job.id !== id) ? job : { ...job, isApplied: true }))
   }
 
-  const chunkedJobs = chunkArray(jobs, RESULTS_PER_PAGE)
+  const handleFiltersChange = (filterObj) => {
+    setFilters(prevFilters => ({ ...prevFilters, ...filterObj }))
+    setCurrentPagination(0)
+  }
+
+
+  const getFilteredJobs = (jobs) => {
+    if (!jobs)
+      return []
+
+    const sanitizedSearchText = searchText.trim().toLowerCase()
+
+    return jobs?.filter((job) => {
+
+      const { modalidad, technology, nivel } = job.data
+
+      const matchesSearch = !sanitizedSearchText || job.titulo.toLowerCase().includes(sanitizedSearchText)
+      const matchesLocation = !filters.location || (modalidad === filters.location)
+      const matchesExperience = !filters.experience || (nivel === filters.experience)
+      const matchesTechnology = !filters.technology || (Array.isArray(technology) ? technology.includes(filters.technology) : (filters.technology === technology))
+
+      return matchesSearch && matchesLocation && matchesExperience && matchesTechnology
+    })
+  }
+
+  const handleSearchText = (value) => {
+    setSearchText(value)
+    setCurrentPagination(0)
+
+  }
+
+
+  const filteredJobs = getFilteredJobs(jobs)
+
+  const chunkedJobs = chunkArray(filteredJobs, RESULTS_PER_PAGE)
+  const currentJobs = chunkedJobs[currentPagination] || []
 
   return (
     <>
@@ -44,11 +81,11 @@ function App() {
         <section className="jobs-search">
           <h1>Encuentra tu próximo trabajo</h1>
           <p>Explora miles de oportunidades en el sector tecnológico.</p>
-          <Form />
+          <Form onFiltersChange={handleFiltersChange} onChange={handleSearchText} />
         </section>
         <section>
           <h2>Resultados de búsqueda</h2>
-          <JobsList jobs={chunkedJobs[currentPagination]} onApply={handleJobApply} />
+          <JobsList jobs={currentJobs} onApply={handleJobApply} />
           <Pagination itemsNumber={chunkedJobs.length} onClick={handlePaginationChange} currentIndex={currentPagination} />
         </section>
       </main>

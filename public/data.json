@@ -36,7 +36,7 @@
         "data": {
             "technology": "mobile",
             "modalidad": "guadalajara",
-            "nivel": "mid-level"
+            "nivel": "mid"
         }
     },
     {
@@ -48,7 +48,7 @@
         "data": {
             "technology": "mobile",
             "modalidad": "remoto",
-            "nivel": "mid-level"
+            "nivel": "mid"
         }
     },
     {
@@ -60,7 +60,7 @@
         "data": {
             "technology": "mobile",
             "modalidad": "barcelona",
-            "nivel": "mid-level"
+            "nivel": "mid"
         }
     },
     {
@@ -72,7 +72,7 @@
         "data": {
             "technology": "mobile",
             "modalidad": "bsas",
-            "nivel": "mid-level"
+            "nivel": "mid"
         }
     },
     {
@@ -84,7 +84,7 @@
         "data": {
             "technology": "mobile",
             "modalidad": "remoto",
-            "nivel": "mid-level"
+            "nivel": "mid"
         }
     },
     {
@@ -108,7 +108,7 @@
         "data": {
             "technology": "react",
             "modalidad": "valencia",
-            "nivel": "mid-level"
+            "nivel": "mid"
         }
     },
     {
@@ -144,7 +144,7 @@
         "data": {
             "technology": "mobile",
             "modalidad": "lima",
-            "nivel": "mid-level"
+            "nivel": "mid"
         }
     },
     {
@@ -156,7 +156,7 @@
         "data": {
             "technology": "mobile",
             "modalidad": "santiago",
-            "nivel": "mid-level"
+            "nivel": "mid"
         }
     },
     {
@@ -168,7 +168,7 @@
         "data": {
             "technology": "mobile",
             "modalidad": "madrid",
-            "nivel": "mid-level"
+            "nivel": "mid"
         }
     },
     {
