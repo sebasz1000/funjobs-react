@@ -62,6 +62,7 @@ function App() {
   }
 
   const handleSearchText = (value) => {
+    console.log(value)
     setSearchText(value)
     setCurrentPagination(0)
 
@@ -82,10 +83,13 @@ function App() {
         <section className="jobs-search">
           <h1>Encuentra tu próximo trabajo</h1>
           <p>Explora miles de oportunidades en el sector tecnológico.</p>
-          <Form onFiltersChange={handleFiltersChange} onChange={handleSearchText} />
+          <Form onFiltersChange={handleFiltersChange}
+            onSearchChange={handleSearchText}
+            textValue={searchText}
+            onSearchSubmit={handleSearchText} />
         </section>
         <section>
-          <h2>Resultados de búsqueda</h2>
+          <h2 style={{ textAlign: "center" }}>Resultados de búsqueda</h2>
           <JobsList jobs={paginatedJobs} onApply={handleJobApply} />
           <Pagination pagesNumber={totalPages} onClick={handlePaginationChange} currentIndex={currentPagination} />
         </section>
