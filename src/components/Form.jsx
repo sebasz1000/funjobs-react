@@ -1,7 +1,7 @@
-import { FILTERS } from "../consts/const";
 import { JobFilters } from "./JobFilters";
 import { useId, useRef } from "react";
-export function Form({ onFiltersChange, onSearchChange, onSearchSubmit, textValue }) {
+
+export function Form({ filters, onFiltersChange, onSearchChange, onSearchSubmit, textValue }) {
 
     const idText = useId()
     const searchTextRef = useRef("")
@@ -9,6 +9,7 @@ export function Form({ onFiltersChange, onSearchChange, onSearchSubmit, textValu
     const handleChange = (e) => {
         onSearchChange(e.target.value)
     }
+
     const handleSubmit = (e) => {
         e.preventDefault()
         const formData = new FormData(e.target)
@@ -41,7 +42,7 @@ export function Form({ onFiltersChange, onSearchChange, onSearchSubmit, textValu
                 <button type="submit">Buscar</button>
             </div>
 
-            <JobFilters filters={FILTERS} onChange={onFiltersChange} />
+            <JobFilters filters={filters} onChange={onFiltersChange} />
         </form>
     )
 }

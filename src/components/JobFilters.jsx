@@ -8,22 +8,22 @@ function JobFilter({
     onChange
 }) {
 
-    const groupJobs = (jobs) => {
-        return jobs.reduce((obj, job) => {
-            job.isPopular
-                ? (obj.arePopular = [...obj.arePopular, job])
-                : (obj.areRegular = [...obj.areRegular, job])
+    const groupOptions = (filters) => {
+        return filters.reduce((obj, filter) => {
+            filter.isPopular
+                ? (obj.arePopular = [...obj.arePopular, filter])
+                : (obj.areRegular = [...obj.areRegular, filter])
 
             return obj
 
         }, { arePopular: [], areRegular: [] })
     }
 
-    const renderFilters = (jobs) => {
-        if (!jobs.length) {
-            return <option key={jobs.id} value={jobs.value}>{jobs.literal}</option>
+    const renderFilters = (filters) => {
+        if (!filters.length) {
+            return <option key={filters.id} value={filters.value}>{filters.literal}</option>
         }
-        return jobs.map(({ value, literal, id }) => <option key={id} value={value}>{literal}</option>)
+        return filters.map(({ value, literal, id }) => <option key={id} value={value}>{literal}</option>)
 
     }
 
@@ -34,18 +34,18 @@ function JobFilter({
     }
 
     const shouldGroup = options.some(opt => opt.isPopular === true)
-    const groupedJobs = shouldGroup ? groupJobs(options) : null
+    const groupedOptions = shouldGroup ? groupOptions(options) : null
 
     return (
         <select name={loweredName} id={`filter-${loweredName}`} onChange={handleChange}>
             {
                 shouldGroup
                     ? <>
-                        {renderFilters(groupedJobs.areRegular[0])}
+                        {renderFilters(groupedOptions.areRegular[0])}
                         <GroupedFilters label="Tecnologías populares">
-                            {renderFilters(groupedJobs.arePopular)}
+                            {renderFilters(groupedOptions.arePopular)}
                         </GroupedFilters>
-                        {renderFilters(groupedJobs.areRegular.slice(1))}
+                        {renderFilters(groupedOptions.areRegular.slice(1))}
                     </>
                     : renderFilters(options)
             }

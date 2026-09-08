@@ -62,7 +62,6 @@ function App() {
   }
 
   const handleSearchText = (value) => {
-    console.log(value)
     setSearchText(value)
     setCurrentPagination(0)
 
@@ -86,7 +85,8 @@ function App() {
           <Form onFiltersChange={handleFiltersChange}
             onSearchChange={handleSearchText}
             textValue={searchText}
-            onSearchSubmit={handleSearchText} />
+            onSearchSubmit={handleSearchText}
+            filters={FILTERS} />
         </section>
         <section>
           <h2 style={{ textAlign: "center" }}>Resultados de búsqueda</h2>
@@ -100,3 +100,5 @@ function App() {
 }
 
 export default App
+
+/** 7:30:22 */
