@@ -7,11 +7,14 @@ export function JobsList({ jobs, onApply }) {
         return <p>There are not jobs to list</p>
 
     return (
-        <div className="jobs-listings">
-            {
-                jobs.map(job => <JobCard key={job.id} {...job} onApply={onApply} />)
-            }
-        </div>
+        <>
+            <h2 style={{ textAlign: "center" }}>Resultados de búsqueda</h2>
+            <div className="jobs-listings">
+                {
+                    jobs.map(job => <JobCard key={job.id} {...job} onApply={onApply} />)
+                }
+            </div>
+        </>
     )
 
 
