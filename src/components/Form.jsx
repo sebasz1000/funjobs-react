@@ -1,7 +1,12 @@
 import { JobFilters } from "./JobFilters";
 import { useId, useRef } from "react";
 
-export function Form({ filters, onFiltersChange, onSearchChange, onSearchSubmit, textValue }) {
+export function Form({
+    filters,
+    onFiltersChange,
+    onSearchChange,
+    onSearchSubmit,
+    textValue }) {
 
     const idText = useId()
     const searchTextRef = useRef("")

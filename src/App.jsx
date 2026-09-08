@@ -90,8 +90,11 @@ function App() {
         </section>
         <section>
           <h2 style={{ textAlign: "center" }}>Resultados de búsqueda</h2>
-          <JobsList jobs={paginatedJobs} onApply={handleJobApply} />
-          <Pagination pagesNumber={totalPages} onClick={handlePaginationChange} currentIndex={currentPagination} />
+          <JobsList jobs={paginatedJobs}
+            onApply={handleJobApply} />
+          <Pagination pagesNumber={totalPages}
+            onClick={handlePaginationChange}
+            currentIndex={currentPagination} />
         </section>
       </main>
       <Footer />
