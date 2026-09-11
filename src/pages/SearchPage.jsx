@@ -16,7 +16,8 @@ function SearchPage() {
     const [jobs, setJobs] = useState([])
     const [currentPagination, setCurrentPagination] = useState(0)
     const [filters, setFilters] = useState(initFilters)
-    const [searchText, setSearchText] = useState("")
+    const urlParams = new URLSearchParams(window.location.search)
+    const [searchText, setSearchText] = useState(urlParams.get("text") ?? "")
 
     useEffect(() => {
         fetch("./data.json")
