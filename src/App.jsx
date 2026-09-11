@@ -3,25 +3,13 @@ import { Header } from "./components/Header"
 import { Footer } from "./components/Footer"
 import SearchPage from "./pages/SearchPage"
 import { NotFoundPage } from "./pages/404"
-import { useEffect, useState } from "react"
-
-
+import { useRouter } from "./hooks/useRouter"
 
 
 function App() {
 
-  const [currentPath, setCurrentPath] = useState(window.location.pathname)
+  const { currentPath } = useRouter()
   let page = <HomePage />
-
-  useEffect(() => {
-
-    const handlePathChange = (e) => setCurrentPath(window.location.pathname)
-
-    window.addEventListener("popstate", handlePathChange)
-
-
-    return () => window.removeEventListener("popstate", handlePathChange)
-  }, [])
 
   if (currentPath === "/") {
     page = <HomePage />
@@ -30,6 +18,7 @@ function App() {
   } else {
     page = <NotFoundPage />
   }
+
 
   return (
     <>
