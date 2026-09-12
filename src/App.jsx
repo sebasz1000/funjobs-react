@@ -14,7 +14,6 @@ function App() {
       <Route path="/" component={<HomePage />} />
       <Route path="/search" component={<SearchPage />} />
       <Route path="/*" component={<NotFoundPage />} />
-
       <Footer />
     </>
   )
