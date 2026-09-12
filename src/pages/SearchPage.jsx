@@ -10,7 +10,13 @@ const INIT_FILTERS = Object.keys(FILTERS).reduce((obj, filterName) => {
     return obj
 }, {})
 
+
+
+
 function SearchPage() {
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const INIT_SEARCH_TEXT = urlParams.get("text") ?? ""
 
     const {
         handleFiltersChange,
@@ -21,7 +27,10 @@ function SearchPage() {
         totalPages,
         handlePaginationChange,
         currentPagination
-    } = useFilters({ initFilters: INIT_FILTERS })
+    } = useFilters({
+        initFilters: INIT_FILTERS,
+        initSearchText: INIT_SEARCH_TEXT
+    })
 
     return (
         <main>

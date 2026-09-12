@@ -2,13 +2,15 @@ import { useEffect, useState } from "react"
 import { RESULTS_PER_PAGE } from "../consts/const"
 import { jobsMapper } from "../utils/jobs.mapper"
 
-export function useFilters({ initFilters }) {
+export function useFilters({
+    initFilters = {},
+    initSearchText = ""
+}) {
 
     const [jobs, setJobs] = useState([])
     const [currentPagination, setCurrentPagination] = useState(0)
     const [filters, setFilters] = useState(initFilters)
-    const urlParams = new URLSearchParams(window.location.search)
-    const [searchText, setSearchText] = useState(urlParams.get("text") ?? "")
+    const [searchText, setSearchText] = useState(initSearchText)
 
     useEffect(() => {
         fetch("./data.json")
