@@ -8,17 +8,44 @@ export function useFilters({
 }) {
 
     const [jobs, setJobs] = useState([])
+    const [totalJobs, setTotalJobs] = useState(0)
+    const [isLoading, setIsLoading] = useState(true)
     const [currentPagination, setCurrentPagination] = useState(0)
     const [filters, setFilters] = useState(initFilters)
     const [searchText, setSearchText] = useState(initSearchText)
 
     useEffect(() => {
-        fetch("./data.json")
-            .then(res => res.json())
-            .then(data => {
-                setJobs(jobsMapper(data))
-            })
-    }, [])
+
+        async function fetchJobs(url) {
+            try {
+                setIsLoading(true)
+                const params = new URLSearchParams()
+                if (searchText) params.append("text", searchText)
+                if (filters.technology) params.append("technology", filters.technology)
+                if (filters.location) params.append("type", filters.location)
+                if (filters.experience) params.append("level", filters.experience)
+                const offset = currentPagination * RESULTS_PER_PAGE
+                params.append("offset", offset)
+                params.append("limit", RESULTS_PER_PAGE)
+
+                const queryParams = params.toString()
+
+
+
+                const res = await fetch(`${url}?${queryParams}`)
+                const { data, total } = await res.json()
+                setJobs(data)
+                setTotalJobs(total)
+            } catch (error) {
+                console.log("Got and error", error)
+            } finally {
+                setIsLoading(false)
+            }
+        }
+
+        fetchJobs("https://jscamp-api.vercel.app/api/jobs")
+
+    }, [searchText, filters, currentPagination])
 
 
 
@@ -36,23 +63,7 @@ export function useFilters({
     }
 
 
-    const getFilteredJobs = (jobs) => {
-        if (!jobs)
-            return []
 
-        const sanitizedSearchText = searchText.trim().toLowerCase()
-        return jobs?.filter((job) => {
-
-            const { modalidad, technology, nivel } = job.data
-
-            const matchesSearch = !sanitizedSearchText || job.titulo.toLowerCase().includes(sanitizedSearchText)
-            const matchesLocation = !filters.location || (modalidad === filters.location)
-            const matchesExperience = !filters.experience || (nivel === filters.experience)
-            const matchesTechnology = !filters.technology || (Array.isArray(technology) ? technology.includes(filters.technology) : (filters.technology === technology))
-
-            return matchesSearch && matchesLocation && matchesExperience && matchesTechnology
-        })
-    }
 
     const handleSearchText = (value) => {
         setSearchText(value)
@@ -60,19 +71,14 @@ export function useFilters({
     }
 
 
-    const filteredJobs = getFilteredJobs(jobs)
-    const totalPages = Math.ceil(filteredJobs.length / RESULTS_PER_PAGE)
-    const paginatedJobs = filteredJobs.slice(
-        currentPagination * RESULTS_PER_PAGE,
-        (currentPagination + 1) * RESULTS_PER_PAGE
-    )
-
+    const totalPages = Math.ceil(totalJobs / RESULTS_PER_PAGE)
 
     return {
         handleFiltersChange,
         handleSearchText,
         searchText,
-        paginatedJobs,
+        jobs,
+        isLoading,
         handleJobApply,
         totalPages,
         handlePaginationChange,
