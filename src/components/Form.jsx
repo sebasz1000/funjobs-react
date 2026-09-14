@@ -2,11 +2,14 @@ import { JobFilters } from "./JobFilters";
 import { useId, useRef } from "react";
 
 export function Form({
-    filters,
+    items,
+    onFiltersReset,
     onFiltersChange,
     onSearchChange,
     onSearchSubmit,
-    textValue }) {
+    textValue,
+    currentFiltersValues,
+}) {
 
     const idText = useId()
     const searchTextRef = useRef("")
@@ -25,6 +28,8 @@ export function Form({
         onSearchSubmit(newSearchText)
         searchTextRef.current = newSearchText
     }
+
+
 
     return (
         <section className="jobs-search">
@@ -50,7 +55,12 @@ export function Form({
                     <button type="submit">Buscar</button>
                 </div>
 
-                <JobFilters filters={filters} onChange={onFiltersChange} />
+                <JobFilters items={items}
+                    onChange={onFiltersChange}
+                    values={currentFiltersValues}
+                    onReset={onFiltersReset} />
+
+
             </form>
         </section>
 

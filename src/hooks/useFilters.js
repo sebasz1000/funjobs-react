@@ -4,7 +4,7 @@ import { jobsMapper } from "../utils/jobs.mapper"
 
 export function useFilters({
     initFilters = {},
-    initSearchText = ""
+    initSearchText = "",
 }) {
 
     const [jobs, setJobs] = useState([])
@@ -63,7 +63,12 @@ export function useFilters({
     }
 
 
+    const handleFiltersReset = () => {
+        setFilters(initFilters)
+        setSearchText("")
+        setCurrentPagination(0)
 
+    }
 
     const handleSearchText = (value) => {
         setSearchText(value)
@@ -72,6 +77,7 @@ export function useFilters({
 
 
     const totalPages = Math.ceil(totalJobs / RESULTS_PER_PAGE)
+
 
     return {
         handleFiltersChange,
@@ -82,6 +88,8 @@ export function useFilters({
         handleJobApply,
         totalPages,
         handlePaginationChange,
-        currentPagination
+        currentPagination,
+        handleFiltersReset,
+        filters
     }
 }

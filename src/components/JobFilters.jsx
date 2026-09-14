@@ -5,7 +5,8 @@ function GroupedFilters({ children, label }) {
 function JobFilter({
     name,
     options = [],
-    onChange
+    onChange,
+    value
 }) {
 
     const groupOptions = (filters) => {
@@ -37,7 +38,10 @@ function JobFilter({
     const groupedOptions = shouldGroup ? groupOptions(options) : null
 
     return (
-        <select name={loweredName} id={`filter-${loweredName}`} onChange={handleChange}>
+        <select name={loweredName}
+            id={`filter-${loweredName}`}
+            onChange={handleChange}
+            value={value}>
             {
                 shouldGroup
                     ? <>
@@ -53,19 +57,33 @@ function JobFilter({
 
 }
 
-export function JobFilters({ filters = {}, onChange }) {
+export function JobFilters({
+    items = {},
+    onChange,
+    values = {},
+    onReset
+}) {
 
-    if (!filters)
+    if (!items)
         return null
+
+    const hasFiltersSet = Object.values(values).some(filterValue => filterValue !== "")
 
     return <div className="search-filters">
 
         {
-            Object.keys(filters).map(filterLabel =>
-                <JobFilter name={filterLabel}
-                    key={filterLabel}
-                    options={filters[filterLabel]}
-                    onChange={onChange} />)
+            Object.keys(items).map(itemLabel => {
+                return <JobFilter name={itemLabel}
+                    key={itemLabel}
+                    options={items[itemLabel]}
+                    onChange={onChange}
+                    value={values[itemLabel.toLocaleLowerCase()]} />
+            })
+        }
+        {
+            hasFiltersSet
+                ? <button onClick={onReset} style={{ marginLeft: "auto" }} >Clear Filters</button>
+                : null
         }
 
     </div>

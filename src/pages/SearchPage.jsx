@@ -24,7 +24,9 @@ function SearchPage() {
         handleJobApply,
         totalPages,
         handlePaginationChange,
-        currentPagination
+        currentPagination,
+        handleFiltersReset,
+        filters,
     } = useFilters({
         initFilters: INIT_FILTERS,
         initSearchText: urlParams.get("text") ?? ""
@@ -37,7 +39,10 @@ function SearchPage() {
                 onSearchChange={handleSearchText}
                 textValue={searchText}
                 onSearchSubmit={handleSearchText}
-                filters={FILTERS} />
+                items={FILTERS}
+                currentFiltersValues={filters}
+                onFiltersReset={handleFiltersReset}
+            />
             <section>
                 {!isLoading ?
                     <JobsList jobs={jobs}
