@@ -11,25 +11,26 @@ const INIT_FILTERS = Object.keys(FILTERS).reduce((obj, filterName) => {
 }, {})
 
 
-
-
 function SearchPage() {
 
     const urlParams = new URLSearchParams(window.location.search)
-    const INIT_SEARCH_TEXT = urlParams.get("text") ?? ""
 
     const {
         handleFiltersChange,
         handleSearchText,
         searchText,
-        paginatedJobs,
+        jobs,
+        isLoading,
         handleJobApply,
         totalPages,
         handlePaginationChange,
-        currentPagination
+        currentPagination,
+        handleFiltersReset,
+        filters,
     } = useFilters({
         initFilters: INIT_FILTERS,
-        initSearchText: INIT_SEARCH_TEXT
+        initSearchText: urlParams.get("text") ?? ""
+
     })
 
     return (
@@ -38,10 +39,15 @@ function SearchPage() {
                 onSearchChange={handleSearchText}
                 textValue={searchText}
                 onSearchSubmit={handleSearchText}
-                filters={FILTERS} />
+                items={FILTERS}
+                currentFiltersValues={filters}
+                onFiltersReset={handleFiltersReset}
+            />
             <section>
-                <JobsList jobs={paginatedJobs}
-                    onApply={handleJobApply} />
+                {!isLoading ?
+                    <JobsList jobs={jobs}
+                        onApply={handleJobApply} />
+                    : <p>Loading....</p>}
                 <Pagination pagesNumber={totalPages}
                     onClick={handlePaginationChange}
                     currentIndex={currentPagination} />

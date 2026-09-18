@@ -156,6 +156,12 @@ nav {
     transition: color 0.2s;
     font-weight: 500;
 
+    &.is-active {
+      color: var(--text-muted);
+      font-weight: 300;
+      pointer-events: none;
+    }
+
     &:hover,
     &:focus {
       color: var(--primary);
